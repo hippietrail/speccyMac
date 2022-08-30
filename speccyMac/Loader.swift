@@ -27,13 +27,14 @@ class Loader {
         let gameType = (game as NSString).pathExtension.lowercased()
         
         guard let gameType = SupportedGameTypes.allCases.first(where: { $0.rawValue == gameType }),
-        let fileUrl = URL(string: game) else {
+              let fileUrl = URL(string: game.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "") else {
             return nil
         }
 
         var gameData: Data
         do {
             gameData = try Data.init(contentsOf: fileUrl)
+            print("success launching game \(game)")
         } catch {
             print("error launching game \(game)")
             return nil
